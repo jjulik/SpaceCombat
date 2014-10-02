@@ -3,13 +3,14 @@
 module SpaceCombat.Character {
     import KeyCode = Enum.KeyCode;
 
-    export class Fighter {
+    export class Fighter implements ICharacter {
         canvasHeight: number;
         canvasWidth: number;
         minY: number;
         maxY: number;
         sprite: PIXI.Sprite;
         texture: PIXI.Texture;
+        addCharacter: (character: Character.ICharacter) => void;
 
         get xSpeedModifier(): number {
             return 20;
@@ -19,9 +20,9 @@ module SpaceCombat.Character {
             return 20;
         }
 
-        constructor(canvasWidth: number, canvasHeight: number) {
-            this.canvasWidth = canvasWidth;
-            this.canvasHeight = canvasHeight;
+        constructor(addCharacterCallback: (character: Character.ICharacter) => void) {
+            this.canvasWidth = document.body.clientWidth;
+            this.canvasHeight = document.body.clientHeight;
             // the lowest the fighter can go on the screen
             this.minY = this.canvasHeight - 50;
             // the highest the fighter can go on the screen
@@ -35,9 +36,11 @@ module SpaceCombat.Character {
             this.sprite.rotation = -Math.PI / 2;
             this.sprite.position.x = this.canvasWidth / 2;
             this.sprite.position.y = this.minY;
+
+            this.addCharacter = addCharacterCallback;
         }
 
-        processInput(pressedKeys) {
+        move(pressedKeys): boolean {
             if (pressedKeys[KeyCode.LEFT] && this.sprite.position.x > 0) {
                 this.sprite.position.x -= this.xSpeedModifier;
             }
@@ -50,6 +53,17 @@ module SpaceCombat.Character {
             if (pressedKeys[KeyCode.UP] && this.sprite.position.y > this.maxY) {
                 this.sprite.position.y -= this.ySpeedModifier;
             }
+            if (pressedKeys[KeyCode.SPACE]) {
+                this.fireBullet();
+                pressedKeys[KeyCode.SPACE] = false;
+            }
+            return false;
+        }
+
+        fireBullet() {
+            var bullet: Bullet;
+            bullet = new Bullet(this.sprite.position.x, this.sprite.position.y, 0, -20);
+            this.addCharacter(bullet);
         }
     }
 } 

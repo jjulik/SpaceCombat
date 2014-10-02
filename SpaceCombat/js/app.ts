@@ -1,26 +1,29 @@
 ﻿///<reference path="lib/PIXI.d.ts"/>
+///<reference path="character/Bullet.ts"/>
 ///<reference path="character/Fighter.ts"/>
+///<reference path="character/ICharacter.ts"/>
 module SpaceCombat {
     class SpaceCombatEngine {
         renderer: PIXI.WebGLRenderer;
         stage: PIXI.Stage;
-        fighter: Character.Fighter;
+        characters: Array<Character.ICharacter>;
         canvasWidth: number;
         canvasHeight: number;
         pressedKeys: Array<boolean>;
 
         constructor() {
+            var fighter: Character.Fighter;
             this.canvasWidth = document.body.clientWidth;
             this.canvasHeight = document.body.clientHeight;
             this.renderer = new PIXI.WebGLRenderer(this.canvasWidth, this.canvasHeight);
             this.stage = new PIXI.Stage(0x000000);
             
-            this.fighter = new Character.Fighter(this.canvasWidth, this.canvasHeight);
+            this.characters = []
+            fighter = new Character.Fighter((character: Character.ICharacter) => this.addCharacter(character));
+            this.addCharacter(fighter);
 
             // add the renderer view element to the DOM
             document.body.appendChild(this.renderer.view);
-
-            this.stage.addChild(this.fighter.sprite);
 
             this.pressedKeys = [];
             this.registerKeyHandlers();
@@ -35,16 +38,34 @@ module SpaceCombat {
             });
         }
 
-        processKeyboardInput() {
-            this.fighter.processInput(this.pressedKeys);
+        moveCharacters() {
+            var i: number = 0, characterCount: number = this.characters.length;
+            try {
+                for (; i < characterCount; i++) {
+                    if (this.characters[i].move(this.pressedKeys)) {
+                        this.characters[i] = null;
+                        // character has died!
+                        this.characters.splice(i, 1);
+                        i++;
+                        characterCount--;
+                    }
+                }
+            } catch (error) {
+                console.log(i);
+            }
         }
 
         animate() {
             requestAnimationFrame(() => this.animate());
 
-            this.processKeyboardInput();
+            this.moveCharacters();
 
             this.renderer.render(this.stage);
+        }
+
+        addCharacter(character: Character.ICharacter) {
+            this.stage.addChild(character.sprite);
+            this.characters.push(character);
         }
     }
 
