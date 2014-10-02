@@ -61,7 +61,7 @@ module SpaceCombat.Character {
 
         fireBullet() {
             var bullet: Bullet;
-            bullet = new Bullet(this.sprite.position.x, this.sprite.position.y, 0, -20);
+            bullet = new Bullet(this.sprite.position.x, this.sprite.position.y, 0, -40);
             this.addCharacter(bullet);
         }
     }
