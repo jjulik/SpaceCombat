@@ -14,15 +14,25 @@ module SpaceCombat {
         fighter: PIXI.Sprite;
         canvasWidth: number;
         canvasHeight: number;
+        minY: number;
+        maxY: number;
         pressedKeys: Array<boolean>;
 
-        get speedModifer(): number {
+        get xSpeedModifier(): number {
+            return 20;
+        }
+
+        get ySpeedModifier(): number {
             return 20;
         }
 
         constructor() {
             this.canvasWidth = document.body.clientWidth;
             this.canvasHeight = document.body.clientHeight;
+            // the lowest the fighter can go on the screen
+            this.minY = this.canvasHeight - 50;
+            // the highest the fighter can go on the screen
+            this.maxY = 50;//Math.max(this.minY - 300, 50);
             this.renderer = new PIXI.WebGLRenderer(this.canvasWidth, this.canvasHeight);
             this.stage = new PIXI.Stage(0x000000);
             this.texture = PIXI.Texture.fromImage('img/fighter.png');
@@ -35,7 +45,7 @@ module SpaceCombat {
             this.fighter.anchor.y = 0.5;
             this.fighter.rotation = -Math.PI / 2;
             this.fighter.position.x = this.canvasWidth / 2;
-            this.fighter.position.y = this.canvasHeight - 50;
+            this.fighter.position.y = this.minY;
             this.stage.addChild(this.fighter);
 
             this.pressedKeys = [];
@@ -53,11 +63,18 @@ module SpaceCombat {
 
         processKeyboardInput() {
             if (this.pressedKeys[KeyCode.LEFT] && this.fighter.position.x > 0) {
-                this.fighter.position.x -= this.speedModifer;
+                this.fighter.position.x -= this.xSpeedModifier;
             }
             if (this.pressedKeys[KeyCode.RIGHT] && this.fighter.position.x < this.canvasWidth) {
-                this.fighter.position.x += this.speedModifer;
+                this.fighter.position.x += this.xSpeedModifier;
             }
+            if (this.pressedKeys[KeyCode.DOWN] && this.fighter.position.y < this.minY) {
+                this.fighter.position.y += this.ySpeedModifier;
+            }
+            if (this.pressedKeys[KeyCode.UP] && this.fighter.position.y > this.maxY) {
+                this.fighter.position.y -= this.ySpeedModifier;
+            }
+
         }
 
         animate() {
