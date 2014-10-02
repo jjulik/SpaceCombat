@@ -28,8 +28,8 @@ module SpaceCombat.Character {
             this.texture = bulletShape.generateTexture();
             this.sprite = new PIXI.Sprite(this.texture);
 
-            this.sprite.anchor.x = 0;
-            this.sprite.anchor.y = 0;
+            this.sprite.anchor.x = 0.5;
+            this.sprite.anchor.y = 0.5;
             this.sprite.position.x = xOrigin;
             this.sprite.position.y = yOrigin;
         }
