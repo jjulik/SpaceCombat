@@ -17,7 +17,7 @@ module SpaceCombat {
         pressedKeys: Array<boolean>;
 
         get speedModifer(): number {
-            return 10;
+            return 20;
         }
 
         constructor() {
@@ -44,15 +44,10 @@ module SpaceCombat {
 
         registerKeyHandlers() {
             document.addEventListener('keydown', (event) => {
-                //should we even bother with a switch case?
-                switch (event.keyCode) {
-                    case KeyCode.LEFT:
-                    case KeyCode.UP:
-                    case KeyCode.RIGHT:
-                    case KeyCode.DOWN:
-                        this.pressedKeys[event.keyCode] = true;
-                        break;
-                }
+                this.pressedKeys[event.keyCode] = true;
+            });
+            document.addEventListener('keyup', (event) => {
+                this.pressedKeys[event.keyCode] = false;
             });
         }
 
@@ -63,7 +58,6 @@ module SpaceCombat {
             if (this.pressedKeys[KeyCode.RIGHT] && this.fighter.position.x < this.canvasWidth) {
                 this.fighter.position.x += this.speedModifer;
             }
-            this.pressedKeys = [];
         }
 
         animate() {
