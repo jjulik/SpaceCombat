@@ -39,12 +39,16 @@ module SpaceCombat.Character {
             this.sprite.position.y += this.ySpeed;
 
             if (this.sprite.y < 0 || this.sprite.y > this.canvasHeight) {
-                this.sprite.stage.removeChild(this.sprite);
-                this.sprite = null;
-                this.texture = null;
+                this.die();
                 return true;
             }
             return false;
+        }
+
+        die() {
+            this.sprite.stage.removeChild(this.sprite);
+            this.texture.destroy(true);
+            this.sprite = null;
         }
     }
 } 
