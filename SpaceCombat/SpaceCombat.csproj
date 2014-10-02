@@ -26,6 +26,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="js\app.ts" />
     <TypeScriptCompile Include="js\character\Fighter.ts" />
+    <TypeScriptCompile Include="js\Enum.ts" />
     <TypeScriptCompile Include="js\lib\PIXI.d.ts" />
   </ItemGroup>
   <ItemGroup>
