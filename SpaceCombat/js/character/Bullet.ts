@@ -8,16 +8,24 @@ module SpaceCombat.Character {
         canvasWidth: number;
         xSpeed: number;
         ySpeed: number;
+        dx: (x: number) => number = (x: number) => { return 0 };
+        dy: (y: number) => number = (y: number) => { return 0 };
         sprite: PIXI.Sprite;
         texture: PIXI.Texture;
 
-        constructor(xOrigin: number, yOrigin: number, xSpeed: number, ySpeed: number) {
+        constructor(xOrigin: number, yOrigin: number, xSpeed: number, ySpeed: number, dx?: (x: number) => number, dy?: (y: number) => number) {
             var bulletShape: PIXI.Graphics;
             this.canvasWidth = document.body.clientWidth;
             this.canvasHeight = document.body.clientHeight;
 
             this.xSpeed = xSpeed;
             this.ySpeed = ySpeed;
+            if (dx !== null && typeof(dx) !== 'undefined') {
+                this.dx = dx;
+            }
+            if (dy !== null && typeof(dy) !== 'undefined') {
+                this.dy = dy;
+            }
 
             bulletShape = new PIXI.Graphics();
             bulletShape.beginFill(0xFFFFFF)
@@ -35,6 +43,8 @@ module SpaceCombat.Character {
         }
 
         move(pressedKeys: Array<boolean>): boolean {
+            this.xSpeed += this.dx(this.sprite.position.x);
+            this.ySpeed += this.dy(this.sprite.position.y);
             this.sprite.position.x += this.xSpeed;
             this.sprite.position.y += this.ySpeed;
 
