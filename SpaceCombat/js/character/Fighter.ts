@@ -55,7 +55,6 @@ module SpaceCombat.Character {
             }
             if (pressedKeys[KeyCode.SPACE]) {
                 this.fireBullet();
-                pressedKeys[KeyCode.SPACE] = false;
             }
             return false;
         }
