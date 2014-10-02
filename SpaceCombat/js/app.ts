@@ -9,14 +9,6 @@ module SpaceCombat {
         canvasHeight: number;
         pressedKeys: Array<boolean>;
 
-        get xSpeedModifier(): number {
-            return 20;
-        }
-
-        get ySpeedModifier(): number {
-            return 20;
-        }
-
         constructor() {
             this.canvasWidth = document.body.clientWidth;
             this.canvasHeight = document.body.clientHeight;

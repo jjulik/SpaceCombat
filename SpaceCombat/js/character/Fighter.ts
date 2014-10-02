@@ -25,7 +25,7 @@ module SpaceCombat.Character {
             // the lowest the fighter can go on the screen
             this.minY = this.canvasHeight - 50;
             // the highest the fighter can go on the screen
-            this.maxY = 50;//Math.max(this.minY - 300, 50);
+            this.maxY = 50;
 
             this.texture = PIXI.Texture.fromImage('img/fighter.png');
             this.sprite = new PIXI.Sprite(this.texture);
