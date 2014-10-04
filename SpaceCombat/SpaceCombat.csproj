@@ -60,7 +60,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2192</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:2192/</IISUrl>
+          <IISUrl>http://localhost:8888/SpaceCombat</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
