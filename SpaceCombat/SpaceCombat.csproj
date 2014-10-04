@@ -18,6 +18,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="css\app.css" />
+    <Content Include="img\enemy.png" />
     <Content Include="img\fighter.png" />
     <Content Include="index.html" />
     <Content Include="js\lib\pixi.dev.js" />
@@ -26,10 +27,12 @@
   <ItemGroup>
     <TypeScriptCompile Include="js\app.ts" />
     <TypeScriptCompile Include="js\character\Bullet.ts" />
+    <TypeScriptCompile Include="js\character\Enemy.ts" />
     <TypeScriptCompile Include="js\character\Fighter.ts" />
     <TypeScriptCompile Include="js\character\ICharacter.ts" />
     <TypeScriptCompile Include="js\Enum.ts" />
     <TypeScriptCompile Include="js\lib\PIXI.d.ts" />
+    <TypeScriptCompile Include="js\TextureManager.ts" />
   </ItemGroup>
   <ItemGroup>
     <None Include="web.Debug.config">

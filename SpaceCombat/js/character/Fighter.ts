@@ -9,8 +9,9 @@ module SpaceCombat.Character {
         minY: number;
         maxY: number;
         sprite: PIXI.Sprite;
-        texture: PIXI.Texture;
+        bulletTexture: PIXI.Texture;
         addCharacter: (character: Character.ICharacter) => void;
+        subType: Enum.CharacterSubType;
 
         get xSpeedModifier(): number {
             return 20;
@@ -20,7 +21,7 @@ module SpaceCombat.Character {
             return 20;
         }
 
-        constructor(addCharacterCallback: (character: Character.ICharacter) => void) {
+        constructor(texture: PIXI.Texture, bulletTexture: PIXI.Texture, addCharacterCallback: (character: Character.ICharacter) => void) {
             this.canvasWidth = document.body.clientWidth;
             this.canvasHeight = document.body.clientHeight;
             // the lowest the fighter can go on the screen
@@ -28,8 +29,7 @@ module SpaceCombat.Character {
             // the highest the fighter can go on the screen
             this.maxY = 50;
 
-            this.texture = PIXI.Texture.fromImage('img/fighter.png');
-            this.sprite = new PIXI.Sprite(this.texture);
+            this.sprite = new PIXI.Sprite(texture);
 
             this.sprite.anchor.x = 0.5;
             this.sprite.anchor.y = 0.5;
@@ -38,6 +38,10 @@ module SpaceCombat.Character {
             this.sprite.position.y = this.minY;
 
             this.addCharacter = addCharacterCallback;
+
+            this.bulletTexture = bulletTexture;
+
+            this.subType = Enum.CharacterSubType.PLAYER;
         }
 
         move(pressedKeys): boolean {
@@ -61,8 +65,14 @@ module SpaceCombat.Character {
 
         fireBullet() {
             var bullet: Bullet;
-            bullet = new Bullet(this.sprite.position.x, this.sprite.position.y, 0, -40);
+            bullet = new Bullet(this.bulletTexture, this.sprite.position.x, this.sprite.position.y, 0, -20);
+            bullet.subType = Enum.CharacterSubType.FRIENDLY_BULLET;
             this.addCharacter(bullet);
+        }
+
+        die(): boolean {
+            // ha ha I am invincible!
+            return false;
         }
     }
 } 

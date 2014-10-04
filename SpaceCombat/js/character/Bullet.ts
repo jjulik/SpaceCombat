@@ -1,4 +1,5 @@
 ﻿///<reference path="../lib/PIXI.d.ts"/>
+///<reference path="../Enum.ts"/>
 module SpaceCombat.Character {
     sprite: PIXI.Sprite;
     texture: PIXI.Texture;
@@ -11,10 +12,9 @@ module SpaceCombat.Character {
         dx: (x: number) => number = (x: number) => { return 0 };
         dy: (y: number) => number = (y: number) => { return 0 };
         sprite: PIXI.Sprite;
-        texture: PIXI.Texture;
+        subType: Enum.CharacterSubType;
 
-        constructor(xOrigin: number, yOrigin: number, xSpeed: number, ySpeed: number, dx?: (x: number) => number, dy?: (y: number) => number) {
-            var bulletShape: PIXI.Graphics;
+        constructor(texture: PIXI.Texture, xOrigin: number, yOrigin: number, xSpeed: number, ySpeed: number, dx?: (x: number) => number, dy?: (y: number) => number) {
             this.canvasWidth = document.body.clientWidth;
             this.canvasHeight = document.body.clientHeight;
 
@@ -27,14 +27,7 @@ module SpaceCombat.Character {
                 this.dy = dy;
             }
 
-            bulletShape = new PIXI.Graphics();
-            bulletShape.beginFill(0xFFFFFF)
-            bulletShape.lineStyle(1, 0xFFFFFF, 1);
-            bulletShape.drawCircle(0, 0, 3);
-            bulletShape.endFill();
-
-            this.texture = bulletShape.generateTexture();
-            this.sprite = new PIXI.Sprite(this.texture);
+            this.sprite = new PIXI.Sprite(texture);
 
             this.sprite.anchor.x = 0.5;
             this.sprite.anchor.y = 0.5;
@@ -55,10 +48,10 @@ module SpaceCombat.Character {
             return false;
         }
 
-        die() {
+        die(): boolean {
             this.sprite.stage.removeChild(this.sprite);
-            this.texture.destroy(true);
             this.sprite = null;
+            return true;
         }
     }
 } 
