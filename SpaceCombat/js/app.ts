@@ -18,8 +18,8 @@ module SpaceCombat {
 
         constructor() {
             var fighter: Character.Fighter;
-            var bulletTexture: PIXI.Texture;
             var bulletShape: PIXI.Graphics;
+            var enemyBulletShape: PIXI.Graphics;
             this.canvasWidth = document.body.clientWidth;
             this.canvasHeight = document.body.clientHeight;
             this.renderer = new PIXI.WebGLRenderer(this.canvasWidth, this.canvasHeight);
@@ -33,8 +33,13 @@ module SpaceCombat {
             bulletShape.lineStyle(1, 0xFFFFFF, 1);
             bulletShape.drawCircle(0, 0, 3);
             bulletShape.endFill();
-            bulletTexture = bulletShape.generateTexture();
-            this.textureManager.loadTexture('bullet', bulletTexture);
+            this.textureManager.loadTexture('bullet', bulletShape.generateTexture());
+            enemyBulletShape = new PIXI.Graphics();
+            enemyBulletShape.beginFill(0xFF0000);
+            enemyBulletShape.lineStyle(1, 0xFF0000, 1);
+            enemyBulletShape.drawCircle(0, 0, 3);
+            enemyBulletShape.endFill();
+            this.textureManager.loadTexture('enemyBullet', enemyBulletShape.generateTexture());
 
             this.characters = [];
             fighter = new Character.Fighter(this.textureManager.textures['fighter'], this.textureManager.textures['bullet'], (character: Character.ICharacter) => this.addCharacter(character));
@@ -167,7 +172,7 @@ module SpaceCombat {
             var i: number;
             var enemy: Character.Enemy;
             for (i = 1; i <= enemyCount; i++) {
-                enemy = new Character.Enemy(enemyTexture, i * spaceBetween, 50);
+                enemy = new Character.Enemy(enemyTexture, this.textureManager.textures['enemyBullet'], i * spaceBetween, 50, (character: Character.ICharacter) => this.addCharacter(character));
                 this.addCharacter(enemy);
                 this.enemyTotal++;
             }
