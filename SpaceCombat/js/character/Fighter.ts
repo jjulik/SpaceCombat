@@ -28,12 +28,12 @@ module SpaceCombat.Character {
             this.minY = this.canvasHeight - 50;
             // the highest the fighter can go on the screen
             this.maxY = 50;
-
+            
             this.sprite = new PIXI.Sprite(texture);
 
             this.sprite.anchor.x = 0.5;
             this.sprite.anchor.y = 0.5;
-            this.sprite.rotation = -Math.PI / 2;
+            this.sprite.rotation = 0;
             this.sprite.position.x = this.canvasWidth / 2;
             this.sprite.position.y = this.minY;
 
@@ -65,7 +65,7 @@ module SpaceCombat.Character {
 
         fireBullet() {
             var bullet: Bullet;
-            bullet = new Bullet(this.bulletTexture, this.sprite.position.x, this.sprite.position.y, 0, -20);
+            bullet = new Bullet(this.bulletTexture, this.sprite.position.x, this.sprite.position.y - 20, 0, -20);
             bullet.subType = Enum.CharacterSubType.FRIENDLY_BULLET;
             this.addCharacter(bullet);
         }

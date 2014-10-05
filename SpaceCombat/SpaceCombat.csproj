@@ -18,8 +18,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="css\app.css" />
-    <Content Include="img\enemy.png" />
-    <Content Include="img\fighter.png" />
+    <Content Include="img\Credit.txt" />
+    <Content Include="img\enemy_v2.png" />
+    <Content Include="img\ships_2.png" />
+    <Content Include="img\starfield.png" />
     <Content Include="index.html" />
     <Content Include="js\lib\pixi.dev.js" />
     <Content Include="web.config" />

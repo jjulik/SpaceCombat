@@ -18,6 +18,8 @@ module SpaceCombat {
 
         constructor() {
             var fighter: Character.Fighter;
+            var fighterTexture: PIXI.Texture;
+            var enemyTexture: PIXI.Texture;
             var bulletShape: PIXI.Graphics;
             var enemyBulletShape: PIXI.Graphics;
             this.canvasWidth = document.body.clientWidth;
@@ -26,8 +28,11 @@ module SpaceCombat {
             this.stage = new PIXI.Stage(0x000000);
             this.textureManager = new TextureManager();
 
-            this.textureManager.loadTexture('fighter', PIXI.Texture.fromImage('img/fighter.png'));
-            this.textureManager.loadTexture('enemy', PIXI.Texture.fromImage('img/enemy.png'));
+            fighterTexture = PIXI.Texture.fromImage('img/ships_2.png');
+            fighterTexture.setFrame(new PIXI.Rectangle(0, 0, 64, 64));
+            this.textureManager.loadTexture('fighter', fighterTexture);
+            enemyTexture = PIXI.Texture.fromImage('img/enemy_v2.png');
+            this.textureManager.loadTexture('enemy', enemyTexture);
             bulletShape = new PIXI.Graphics();
             bulletShape.beginFill(0xFFFFFF)
             bulletShape.lineStyle(1, 0xFFFFFF, 1);

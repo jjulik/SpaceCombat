@@ -1,0 +1,10 @@
+﻿// Eikester
+// http://opengameart.org/content/space-ships-0
+- ships_2.png
+
+// Priest865
+// http://opengameart.org/users/priest865
+- starfield.png
+
+// Copyright Joe Julik 2014
+- enemy_v2.png
