@@ -19,6 +19,14 @@
         TOUCH = 6
     }
 
+    export enum GamepadButton {
+        LEFT = 14,
+        UP = 12,
+        RIGHT = 15,
+        DOWN = 13,
+        TRIGGER = 7
+    }
+
     export enum KeyCode {
         SPACE = 32,
         LEFT = 37,

@@ -1,4 +1,5 @@
-﻿///<reference path="../lib/PIXI.d.ts"/>
+﻿///<reference path="../lib/Gamepad.d.ts"/>
+///<reference path="../lib/PIXI.d.ts"/>
 ///<reference path="../Enum.ts"/>
 module SpaceCombat.Character {
     import KeyCode = Enum.KeyCode;
@@ -66,8 +67,23 @@ module SpaceCombat.Character {
             return false;
         }
 
-        handleGamepadInput(): boolean {
+        handleGamepadInput(gamepad: Gamepad): boolean {
             // TODO: this
+            if (gamepad.buttons[Enum.GamepadButton.LEFT].pressed && this.sprite.position.x > 0) {
+                this.sprite.position.x -= this.xSpeedModifier;
+            }
+            if (gamepad.buttons[Enum.GamepadButton.RIGHT].pressed && this.sprite.position.x < this.canvasWidth) {
+                this.sprite.position.x += this.xSpeedModifier;
+            }
+            if (gamepad.buttons[Enum.GamepadButton.DOWN].pressed && this.sprite.position.y < this.minY) {
+                this.sprite.position.y += this.ySpeedModifier;
+            }
+            if (gamepad.buttons[Enum.GamepadButton.UP].pressed && this.sprite.position.y > this.maxY) {
+                this.sprite.position.y -= this.ySpeedModifier;
+            }
+            if (gamepad.buttons[Enum.GamepadButton.TRIGGER].pressed) {
+                this.fireBullet();
+            }
             return false;
         }
 
@@ -81,16 +97,16 @@ module SpaceCombat.Character {
             return false;
         }
 
-        move(pressedKeys: Array<boolean>): boolean {
+        move(pressedKeys: Array<boolean>, gamepads: Array<Gamepad>): boolean {
             switch (this.inputType) {
                 case Enum.InputType.GAMEPAD_0:
-                    return this.handleGamepadInput();
                 case Enum.InputType.GAMEPAD_1:
-                    return this.handleGamepadInput();
                 case Enum.InputType.GAMEPAD_2:
-                    return this.handleGamepadInput();
                 case Enum.InputType.GAMEPAD_3:
-                    return this.handleGamepadInput();
+                    if (!gamepads[this.inputType]) {
+                        return false;
+                    }
+                    return this.handleGamepadInput(gamepads[this.inputType]);
                 case Enum.InputType.KEYBOARD:
                     return this.handleKeyboardInput(pressedKeys);
                 case Enum.InputType.MOUSE:

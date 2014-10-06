@@ -1,4 +1,5 @@
-﻿///<reference path="lib/PIXI.d.ts"/>
+﻿///<reference path="lib/Gamepad.d.ts"/>
+///<reference path="lib/PIXI.d.ts"/>
 ///<reference path="character/Bullet.ts"/>
 ///<reference path="character/Enemy.ts"/>
 ///<reference path="character/Fighter.ts"/>
@@ -50,7 +51,7 @@ module SpaceCombat {
 
             this.players = []
             this.NPCs = []
-            fighter = new Character.Fighter(this.textureManager.textures['fighter'], this.textureManager.textures['bullet'], (character: Character.INonPlayableCharacter) => this.addCharacter(character), Enum.InputType.KEYBOARD);
+            fighter = new Character.Fighter(this.textureManager.textures['fighter'], this.textureManager.textures['bullet'], (character: Character.INonPlayableCharacter) => this.addCharacter(character), Enum.InputType.GAMEPAD_0);
             this.addPlayer(fighter);
 
             // add the renderer view element to the DOM
@@ -75,8 +76,9 @@ module SpaceCombat {
 
         movePlayers() {
             var i: number = 0, characterCount: number = this.players.length;
+            var gamepads: Array<Gamepad> = this.getGamepads();
             for (; i < characterCount; i++) {
-                if (this.players[i].move(this.pressedKeys)) {
+                if (this.players[i].move(this.pressedKeys, gamepads)) {
                     this.players[i] = null;
                     // player has died!
                     this.players.splice(i, 1);
@@ -84,6 +86,14 @@ module SpaceCombat {
                     characterCount--;
                 }
             }
+        }
+
+        getGamepads(): Array<Gamepad> {
+            var gamepads: Array<Gamepad> = [];
+            if (typeof navigator.getGamepads !== 'undefined') {
+                return navigator.getGamepads();
+            }
+            return gamepads;
         }
 
         moveNPCs() {
