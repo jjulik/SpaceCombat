@@ -19,6 +19,13 @@
         TOUCH = 6
     }
 
+    export enum GamepadAxes {
+        LEFT_X = 0,
+        LEFT_Y = 1,
+        RIGHT_X = 2,
+        RIGHT_Y = 3
+    }
+
     export enum GamepadButton {
         LEFT = 14,
         UP = 12,

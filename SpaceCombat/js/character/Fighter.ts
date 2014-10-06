@@ -68,7 +68,6 @@ module SpaceCombat.Character {
         }
 
         handleGamepadInput(gamepad: Gamepad): boolean {
-            // TODO: this
             if (gamepad.buttons[Enum.GamepadButton.LEFT].pressed && this.sprite.position.x > 0) {
                 this.sprite.position.x -= this.xSpeedModifier;
             }
@@ -83,6 +82,19 @@ module SpaceCombat.Character {
             }
             if (gamepad.buttons[Enum.GamepadButton.TRIGGER].pressed) {
                 this.fireBullet();
+            }
+            // Check the thumb sticks
+            if (gamepad.axes[Enum.GamepadAxes.LEFT_X] < -0.1 && this.sprite.position.x > 0) {
+                this.sprite.position.x += this.xSpeedModifier * gamepad.axes[Enum.GamepadAxes.LEFT_X];
+            }
+            if (gamepad.axes[Enum.GamepadAxes.LEFT_X] > 0.1 && this.sprite.position.x < this.canvasWidth) {
+                this.sprite.position.x += this.xSpeedModifier * gamepad.axes[Enum.GamepadAxes.LEFT_X];
+            }
+            if (gamepad.axes[Enum.GamepadAxes.LEFT_Y] > 0.1 && this.sprite.position.y < this.minY) {
+                this.sprite.position.y += this.ySpeedModifier * gamepad.axes[Enum.GamepadAxes.LEFT_Y];
+            }
+            if (gamepad.axes[Enum.GamepadAxes.LEFT_Y] < -0.1 && this.sprite.position.y > this.maxY) {
+                this.sprite.position.y += this.ySpeedModifier * gamepad.axes[Enum.GamepadAxes.LEFT_Y];
             }
             return false;
         }
