@@ -3,15 +3,16 @@
 module SpaceCombat.Character {
     import KeyCode = Enum.KeyCode;
 
-    export class Fighter implements ICharacter {
+    export class Fighter implements IPlayableCharacter {
         canvasHeight: number;
         canvasWidth: number;
         minY: number;
         maxY: number;
         sprite: PIXI.Sprite;
         bulletTexture: PIXI.Texture;
-        addCharacter: (character: Character.ICharacter) => void;
+        addCharacter: (character: Character.INonPlayableCharacter) => void;
         subType: Enum.CharacterSubType;
+        inputType: Enum.InputType;
 
         get xSpeedModifier(): number {
             return 20;
@@ -21,7 +22,7 @@ module SpaceCombat.Character {
             return 20;
         }
 
-        constructor(texture: PIXI.Texture, bulletTexture: PIXI.Texture, addCharacterCallback: (character: Character.ICharacter) => void) {
+        constructor(texture: PIXI.Texture, bulletTexture: PIXI.Texture, addCharacterCallback: (character: Character.INonPlayableCharacter) => void, inputType: Enum.InputType) {
             this.canvasWidth = document.body.clientWidth;
             this.canvasHeight = document.body.clientHeight;
             // the lowest the fighter can go on the screen
@@ -42,9 +43,11 @@ module SpaceCombat.Character {
             this.bulletTexture = bulletTexture;
 
             this.subType = Enum.CharacterSubType.PLAYER;
+
+            this.inputType = inputType;
         }
 
-        move(pressedKeys): boolean {
+        handleKeyboardInput(pressedKeys: Array<boolean>): boolean {
             if (pressedKeys[KeyCode.LEFT] && this.sprite.position.x > 0) {
                 this.sprite.position.x -= this.xSpeedModifier;
             }
@@ -61,6 +64,41 @@ module SpaceCombat.Character {
                 this.fireBullet();
             }
             return false;
+        }
+
+        handleGamepadInput(): boolean {
+            // TODO: this
+            return false;
+        }
+
+        handleMouseInput(): boolean {
+            // TODO: this
+            return false;
+        }
+
+        handleTouchInput(): boolean {
+            // TODO: this
+            return false;
+        }
+
+        move(pressedKeys: Array<boolean>): boolean {
+            switch (this.inputType) {
+                case Enum.InputType.GAMEPAD_0:
+                    return this.handleGamepadInput();
+                case Enum.InputType.GAMEPAD_1:
+                    return this.handleGamepadInput();
+                case Enum.InputType.GAMEPAD_2:
+                    return this.handleGamepadInput();
+                case Enum.InputType.GAMEPAD_3:
+                    return this.handleGamepadInput();
+                case Enum.InputType.KEYBOARD:
+                    return this.handleKeyboardInput(pressedKeys);
+                case Enum.InputType.MOUSE:
+                    return this.handleMouseInput();
+                case Enum.InputType.TOUCH:
+                    return this.handleTouchInput();
+            }
+            throw new Error('Unknown input type' + this.inputType);
         }
 
         fireBullet() {

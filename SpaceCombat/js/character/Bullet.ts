@@ -4,7 +4,7 @@ module SpaceCombat.Character {
     sprite: PIXI.Sprite;
     texture: PIXI.Texture;
 
-    export class Bullet implements ICharacter {
+    export class Bullet implements INonPlayableCharacter {
         canvasHeight: number;
         canvasWidth: number;
         xSpeed: number;
@@ -35,7 +35,7 @@ module SpaceCombat.Character {
             this.sprite.position.y = yOrigin;
         }
 
-        move(pressedKeys: Array<boolean>): boolean {
+        move(): boolean {
             this.xSpeed += this.dx(this.sprite.position.x);
             this.ySpeed += this.dy(this.sprite.position.y);
             this.sprite.position.x += this.xSpeed;

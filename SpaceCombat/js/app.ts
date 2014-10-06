@@ -2,12 +2,14 @@
 ///<reference path="character/Bullet.ts"/>
 ///<reference path="character/Enemy.ts"/>
 ///<reference path="character/Fighter.ts"/>
-///<reference path="character/ICharacter.ts"/>
+///<reference path="character/INonPlayableCharacter.ts"/>
+///<reference path="character/IPlayableCharacter.ts"/>
 module SpaceCombat {
     class SpaceCombatEngine {
         renderer: PIXI.IPixiRenderer;
         stage: PIXI.Stage;
-        characters: Array<Character.ICharacter>;
+        NPCs: Array<Character.INonPlayableCharacter>;
+        players: Array<Character.IPlayableCharacter>;
         canvasWidth: number;
         canvasHeight: number;
         pressedKeys: Array<boolean>;
@@ -46,9 +48,10 @@ module SpaceCombat {
             enemyBulletShape.endFill();
             this.textureManager.loadTexture('enemyBullet', enemyBulletShape.generateTexture());
 
-            this.characters = [];
-            fighter = new Character.Fighter(this.textureManager.textures['fighter'], this.textureManager.textures['bullet'], (character: Character.ICharacter) => this.addCharacter(character));
-            this.addCharacter(fighter);
+            this.players = []
+            this.NPCs = []
+            fighter = new Character.Fighter(this.textureManager.textures['fighter'], this.textureManager.textures['bullet'], (character: Character.INonPlayableCharacter) => this.addCharacter(character), Enum.InputType.KEYBOARD);
+            this.addPlayer(fighter);
 
             // add the renderer view element to the DOM
             document.body.appendChild(this.renderer.view);
@@ -70,13 +73,26 @@ module SpaceCombat {
             });
         }
 
-        moveCharacters() {
-            var i: number = 0, characterCount: number = this.characters.length;
+        movePlayers() {
+            var i: number = 0, characterCount: number = this.players.length;
             for (; i < characterCount; i++) {
-                if (this.characters[i].move(this.pressedKeys)) {
-                    this.characters[i] = null;
-                    // character has died!
-                    this.characters.splice(i, 1);
+                if (this.players[i].move(this.pressedKeys)) {
+                    this.players[i] = null;
+                    // player has died!
+                    this.players.splice(i, 1);
+                    i++;
+                    characterCount--;
+                }
+            }
+        }
+
+        moveNPCs() {
+            var i: number = 0, characterCount: number = this.NPCs.length;
+            for (; i < characterCount; i++) {
+                if (this.NPCs[i].move()) {
+                    this.NPCs[i] = null;
+                    // non-playable character has died!
+                    this.NPCs.splice(i, 1);
                     i++;
                     characterCount--;
                 }
@@ -84,35 +100,62 @@ module SpaceCombat {
         }
 
         detectCollisions() {
-            var i: number = 0, characterCount: number = this.characters.length;
-            var j: number, killStack: Array<number> = [];
-            for (; i < characterCount; i++) {
-                for (j = i + 1; j < characterCount; j++) {
-                    if (((this.characters[i].subType > 0) !== (this.characters[j].subType > 0)) && this.collideTest(this.characters[i], this.characters[j])) {
+            var i: number = 0, npcCount: number = this.NPCs.length, playerCount = this.players.length;
+            var j: number, deadNPCs: Array<number> = [], deadPlayers: Array<number> = [];
+            //compare each 
+            for (; i < playerCount; i++) {
+                for (j = 0; j < npcCount; j++) {
+                    if (((this.players[i].subType > 0) !== (this.NPCs[j].subType > 0)) && this.collideTest(this.players[i], this.NPCs[j])) {
                         // kill 'em both
-                        killStack.push(i);
-                        killStack.push(j);
+                        deadPlayers.push(i);
+                        deadNPCs.push(j);
                     }
                 }
             }
-            if (killStack.length <= 0) return;
-
-            killStack = this.filterDuplicates(killStack);
-            killStack.sort(function(a : number,b: number) {
-                if (a > b) {
-                    return 1;
-                } else if (a === b) {
-                    return 0;
-                }
-                return -1;
-            });
-            while ((j = killStack.pop()) !== undefined) {
-                if (this.characters[j].die()) {
-                    if (this.characters[j].subType === Enum.CharacterSubType.ENEMY_NPC) {
-                        this.enemyTotal--;
+            for (i = 0; i < npcCount; i++) {
+                if (this.NPCs[i].subType > 0) {
+                    for (j = 0; j < npcCount; j++) {
+                        if (this.NPCs[j].subType <= 0 && this.collideTest(this.NPCs[i], this.NPCs[j])) {
+                            //kill 'em
+                            deadNPCs.push(i);
+                            deadNPCs.push(j);
+                        }
                     }
-                    this.characters.splice(j, 1);
-                    characterCount--;
+                }
+            }
+            if (deadNPCs.length > 0) {
+                deadNPCs = this.filterDuplicates(deadNPCs);
+                deadNPCs.sort(function (a: number, b: number) {
+                    if (a > b) {
+                        return 1;
+                    } else if (a === b) {
+                        return 0;
+                    }
+                    return -1;
+                });
+                while ((j = deadNPCs.pop()) !== undefined) {
+                    if (this.NPCs[j].die()) {
+                        if (this.NPCs[j].subType === Enum.CharacterSubType.ENEMY_NPC) {
+                            this.enemyTotal--;
+                        }
+                        this.NPCs.splice(j, 1);
+                    }
+                }
+            }
+            if (deadPlayers.length > 0) {
+                deadPlayers = this.filterDuplicates(deadPlayers);
+                deadPlayers.sort(function (a: number, b: number) {
+                    if (a > b) {
+                        return 1;
+                    } else if (a === b) {
+                        return 0;
+                    }
+                    return -1;
+                });
+                while ((j = deadPlayers.pop()) !== undefined) {
+                    if (this.players[j].die()) {
+                        this.players.splice(j, 1);
+                    }
                 }
             }
         }
@@ -155,7 +198,8 @@ module SpaceCombat {
 
             this.detectCollisions();
 
-            this.moveCharacters();
+            this.movePlayers();
+            this.moveNPCs();
 
             if (this.enemyTotal <= 0 && !this.newWaveIncoming) {
                 this.newWaveIncoming = true;
@@ -165,9 +209,14 @@ module SpaceCombat {
             this.renderer.render(this.stage);
         }
 
-        addCharacter(character: Character.ICharacter) {
+        addPlayer(character: Character.IPlayableCharacter) {
             this.stage.addChild(character.sprite);
-            this.characters.push(character);
+            this.players.push(character);
+        }
+
+        addCharacter(character: Character.INonPlayableCharacter) {
+            this.stage.addChild(character.sprite);
+            this.NPCs.push(character);
         }
 
         addEnemyWave(level: number) {
@@ -177,7 +226,7 @@ module SpaceCombat {
             var i: number;
             var enemy: Character.Enemy;
             for (i = 1; i <= enemyCount; i++) {
-                enemy = new Character.Enemy(enemyTexture, this.textureManager.textures['enemyBullet'], i * spaceBetween, 50, (character: Character.ICharacter) => this.addCharacter(character));
+                enemy = new Character.Enemy(enemyTexture, this.textureManager.textures['enemyBullet'], i * spaceBetween, 50, (character: Character.INonPlayableCharacter) => this.addCharacter(character));
                 this.addCharacter(enemy);
                 this.enemyTotal++;
             }

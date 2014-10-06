@@ -1,7 +1,7 @@
 ﻿///<reference path="../lib/PIXI.d.ts"/>
 ///<reference path="../Enum.ts"/>
 module SpaceCombat.Character {
-    export class Enemy implements ICharacter {
+    export class Enemy implements INonPlayableCharacter {
         sprite: PIXI.Sprite;
         canvasHeight: number;
         canvasWidth: number;
@@ -9,9 +9,9 @@ module SpaceCombat.Character {
         coolDown: number;
         subType: Enum.CharacterSubType;
         bulletTexture: PIXI.Texture;
-        addCharacter: (character: Character.ICharacter) => void;
+        addCharacter: (character: Character.INonPlayableCharacter) => void;
 
-        constructor(texture: PIXI.Texture, bulletTexture: PIXI.Texture, x: number, y: number, addCharacterCallback: (character: Character.ICharacter) => void) {
+        constructor(texture: PIXI.Texture, bulletTexture: PIXI.Texture, x: number, y: number, addCharacterCallback: (character: Character.INonPlayableCharacter) => void) {
             this.canvasWidth = document.body.clientWidth;
             this.canvasHeight = document.body.clientHeight;
 
@@ -30,7 +30,7 @@ module SpaceCombat.Character {
             this.addCharacter = addCharacterCallback;
         }
 
-        move(pressedKeys: Array<boolean>): boolean {
+        move(): boolean {
             var rand: number;
             if (this.coolDown > 0) {
                 this.coolDown--;

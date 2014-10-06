@@ -32,6 +32,8 @@
     <TypeScriptCompile Include="js\character\Enemy.ts" />
     <TypeScriptCompile Include="js\character\Fighter.ts" />
     <TypeScriptCompile Include="js\character\ICharacter.ts" />
+    <TypeScriptCompile Include="js\character\INonPlayableCharacter.ts" />
+    <TypeScriptCompile Include="js\character\IPlayableCharacter.ts" />
     <TypeScriptCompile Include="js\Enum.ts" />
     <TypeScriptCompile Include="js\lib\PIXI.d.ts" />
     <TypeScriptCompile Include="js\TextureManager.ts" />
