@@ -5,3 +5,7 @@
     width: 100%;
     overflow: hidden;
 }
+
+html {
+    background: url('../img/starfield.png') repeat #000;
+}

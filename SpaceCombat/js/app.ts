@@ -5,7 +5,7 @@
 ///<reference path="character/ICharacter.ts"/>
 module SpaceCombat {
     class SpaceCombatEngine {
-        renderer: PIXI.WebGLRenderer;
+        renderer: PIXI.IPixiRenderer;
         stage: PIXI.Stage;
         characters: Array<Character.ICharacter>;
         canvasWidth: number;
@@ -24,7 +24,7 @@ module SpaceCombat {
             var enemyBulletShape: PIXI.Graphics;
             this.canvasWidth = document.body.clientWidth;
             this.canvasHeight = document.body.clientHeight;
-            this.renderer = new PIXI.WebGLRenderer(this.canvasWidth, this.canvasHeight);
+            this.renderer = PIXI.autoDetectRecommendedRenderer(this.canvasWidth, this.canvasHeight, null, true);
             this.stage = new PIXI.Stage(0x000000);
             this.textureManager = new TextureManager();
 
@@ -150,7 +150,7 @@ module SpaceCombat {
             }
         }
 
-        animate() {
+        animate() {       
             requestAnimationFrame(() => this.animate());
 
             this.detectCollisions();
