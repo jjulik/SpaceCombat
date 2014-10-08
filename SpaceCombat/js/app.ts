@@ -60,7 +60,7 @@ module SpaceCombat {
 
             this.players = []
             this.NPCs = []
-            fighter = new Character.Fighter(this.textureManager.textures['fighter'], bulletFactory, Enum.InputType.MOUSE);
+            fighter = new Character.Fighter(this.textureManager.textures['fighter'], bulletFactory, Enum.InputType.KEYBOARD);
             this.addPlayer(fighter);
 
             // add the renderer view element to the DOM
