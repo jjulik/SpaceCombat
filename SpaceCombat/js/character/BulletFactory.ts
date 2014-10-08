@@ -13,8 +13,11 @@ module SpaceCombat.Character {
         private newShinyBullets: Array<Bullet>;
         bulletSubType: Enum.CharacterSubType;
         addCharacter: (INonPlayableCharacter) => void;
+        damage: number;
 
-        constructor(bulletTexture: PIXI.Texture, bulletSubType: Enum.CharacterSubType, initialClipSize: number, addCharacterCallback: (INonPlayableCharacter) => void) {
+        constructor(damage: number, bulletTexture: PIXI.Texture, bulletSubType: Enum.CharacterSubType, initialClipSize: number, addCharacterCallback: (INonPlayableCharacter) => void) {
+            this.damage = damage;
+
             this.expendedBullets = [];
             this.newShinyBullets = [];
 
@@ -54,7 +57,7 @@ module SpaceCombat.Character {
         loadAmmo(numberOfBullets: number) {
             var bullet: Bullet;
             while (numberOfBullets-- > 0) {
-                bullet = new Bullet(this.texture, (b: Bullet) => this.recycleBullet(b));
+                bullet = new Bullet(this.damage, this.texture, (b: Bullet) => this.recycleBullet(b));
                 bullet.subType = this.bulletSubType;
                 this.newShinyBullets.push(bullet);
             }

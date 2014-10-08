@@ -9,6 +9,8 @@ module SpaceCombat.Character {
         coolDown: number;
         subType: Enum.CharacterSubType;
         bulletFactory: BulletFactory;
+        hp: number;
+        damage: number;
 
         constructor(texture: PIXI.Texture, bulletFactory: BulletFactory, x: number, y: number) {
             this.canvasWidth = document.body.clientWidth;
@@ -25,6 +27,9 @@ module SpaceCombat.Character {
             this.subType = Enum.CharacterSubType.ENEMY_NPC;
 
             this.bulletFactory = bulletFactory;
+
+            this.hp = 25;
+            this.damage = 25;
         }
 
         move(): boolean {
@@ -45,10 +50,14 @@ module SpaceCombat.Character {
             this.bulletFactory.fire(this.sprite.position.x, this.sprite.position.y, 0, 10);
         }
 
-        die(): boolean {
-            this.sprite.stage.removeChild(this.sprite);
-            this.sprite = null;
-            return true;
+        applyDamage(damage: number): boolean {
+            this.hp -= damage;
+            if (this.hp <= 0) {
+                this.sprite.stage.removeChild(this.sprite);
+                this.sprite = null;
+                return true;
+            }
+            return false;
         }
     }
 } 

@@ -35,6 +35,7 @@
     <TypeScriptCompile Include="js\character\ICharacter.ts" />
     <TypeScriptCompile Include="js\character\INonPlayableCharacter.ts" />
     <TypeScriptCompile Include="js\character\IPlayableCharacter.ts" />
+    <TypeScriptCompile Include="js\collision\DamageEvent.ts" />
     <TypeScriptCompile Include="js\Enum.ts" />
     <TypeScriptCompile Include="js\lib\Gamepad.d.ts" />
     <TypeScriptCompile Include="js\lib\PIXI.d.ts" />

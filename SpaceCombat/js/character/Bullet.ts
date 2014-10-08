@@ -11,8 +11,12 @@ module SpaceCombat.Character {
         sprite: PIXI.Sprite;
         subType: Enum.CharacterSubType;
         recycle: (b: Bullet) => void;
+        damage: number;
+        hp: number;
 
-        constructor(texture: PIXI.Texture, recycle: (b: Bullet) => void) {
+        constructor(damage: number, texture: PIXI.Texture, recycle: (b: Bullet) => void) {
+            this.damage = damage;
+
             this.canvasWidth = document.body.clientWidth;
             this.canvasHeight = document.body.clientHeight;
 
@@ -44,13 +48,16 @@ module SpaceCombat.Character {
             this.sprite.position.y += this.ySpeed;
 
             if (this.sprite.y < 0 || this.sprite.y > this.canvasHeight) {
-                this.die();
+                this.applyDamage(1);
                 return true;
             }
             return false;
         }
 
-        die(): boolean {
+        /**
+         * Any amount of damage kills a bullet.
+         */
+        applyDamage(damage: number): boolean {
             this.sprite.stage.removeChild(this.sprite);
             this.recycle(this);
             return true;

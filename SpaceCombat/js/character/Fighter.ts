@@ -14,6 +14,11 @@ module SpaceCombat.Character {
         subType: Enum.CharacterSubType;
         inputType: Enum.InputType;
         bulletFactory: BulletFactory;
+        /**
+         * Amount of health.
+         */
+        hp: number;
+        damage: number;
 
         get xSpeedModifier(): number {
             return 20;
@@ -44,6 +49,9 @@ module SpaceCombat.Character {
             this.subType = Enum.CharacterSubType.PLAYER;
 
             this.inputType = inputType;
+
+            this.hp = 100;
+            this.damage = 25;
         }
 
         handleKeyboardInput(pressedKeys: Array<boolean>): boolean {
@@ -145,8 +153,14 @@ module SpaceCombat.Character {
             this.bulletFactory.fire(this.sprite.position.x, this.sprite.position.y - 20, 0, -20);
         }
 
-        die(): boolean {
-            // ha ha I am invincible!
+        applyDamage(damage: number): boolean {
+            this.hp -= damage;
+            if (this.hp <= 0) {
+                //die
+                this.sprite.stage.removeChild(this.sprite);
+                this.sprite = null;
+                return true;
+            }
             return false;
         }
     }
