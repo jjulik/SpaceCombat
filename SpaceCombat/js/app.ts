@@ -1,6 +1,7 @@
 ﻿///<reference path="lib/Gamepad.d.ts"/>
 ///<reference path="lib/PIXI.d.ts"/>
 ///<reference path="character/Bullet.ts"/>
+///<reference path="character/BulletFactory.ts"/>
 ///<reference path="character/Enemy.ts"/>
 ///<reference path="character/Fighter.ts"/>
 ///<reference path="character/INonPlayableCharacter.ts"/>
