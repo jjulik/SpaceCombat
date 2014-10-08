@@ -10,10 +10,9 @@ module SpaceCombat.Character {
         minY: number;
         maxY: number;
         sprite: PIXI.Sprite;
-        bulletTexture: PIXI.Texture;
-        addCharacter: (character: Character.INonPlayableCharacter) => void;
         subType: Enum.CharacterSubType;
         inputType: Enum.InputType;
+        bulletFactory: BulletFactory;
 
         get xSpeedModifier(): number {
             return 20;
@@ -23,7 +22,7 @@ module SpaceCombat.Character {
             return 20;
         }
 
-        constructor(texture: PIXI.Texture, bulletTexture: PIXI.Texture, addCharacterCallback: (character: Character.INonPlayableCharacter) => void, inputType: Enum.InputType) {
+        constructor(texture: PIXI.Texture, bulletFactory: BulletFactory, inputType: Enum.InputType) {
             this.canvasWidth = document.body.clientWidth;
             this.canvasHeight = document.body.clientHeight;
             // the lowest the fighter can go on the screen
@@ -39,9 +38,7 @@ module SpaceCombat.Character {
             this.sprite.position.x = this.canvasWidth / 2;
             this.sprite.position.y = this.minY;
 
-            this.addCharacter = addCharacterCallback;
-
-            this.bulletTexture = bulletTexture;
+            this.bulletFactory = bulletFactory;
 
             this.subType = Enum.CharacterSubType.PLAYER;
 
@@ -130,10 +127,7 @@ module SpaceCombat.Character {
         }
 
         fireBullet() {
-            var bullet: Bullet;
-            bullet = new Bullet(this.bulletTexture, this.sprite.position.x, this.sprite.position.y - 20, 0, -20);
-            bullet.subType = Enum.CharacterSubType.FRIENDLY_BULLET;
-            this.addCharacter(bullet);
+            this.bulletFactory.fire(this.sprite.position.x, this.sprite.position.y - 20, 0, -20);
         }
 
         die(): boolean {

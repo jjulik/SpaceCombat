@@ -18,6 +18,7 @@ module SpaceCombat {
         level: number;
         newWaveIncoming: boolean;
         textureManager: TextureManager;
+        enemyBulletFactory: Character.BulletFactory;
 
         constructor() {
             var fighter: Character.Fighter;
@@ -25,6 +26,7 @@ module SpaceCombat {
             var enemyTexture: PIXI.Texture;
             var bulletShape: PIXI.Graphics;
             var enemyBulletShape: PIXI.Graphics;
+            var bulletFactory: Character.BulletFactory;
             this.canvasWidth = document.body.clientWidth;
             this.canvasHeight = document.body.clientHeight;
             this.renderer = PIXI.autoDetectRecommendedRenderer(this.canvasWidth, this.canvasHeight, null, true);
@@ -49,9 +51,13 @@ module SpaceCombat {
             enemyBulletShape.endFill();
             this.textureManager.loadTexture('enemyBullet', enemyBulletShape.generateTexture());
 
+            bulletFactory = new Character.BulletFactory(this.textureManager.textures['bullet'], Enum.CharacterSubType.FRIENDLY_BULLET, 50, (character: Character.INonPlayableCharacter) => this.addCharacter(character));
+
+            this.enemyBulletFactory = new Character.BulletFactory(this.textureManager.textures['enemyBullet'], Enum.CharacterSubType.ENEMY_BULLET, 50, (character: Character.INonPlayableCharacter) => this.addCharacter(character));
+
             this.players = []
             this.NPCs = []
-            fighter = new Character.Fighter(this.textureManager.textures['fighter'], this.textureManager.textures['bullet'], (character: Character.INonPlayableCharacter) => this.addCharacter(character), Enum.InputType.GAMEPAD_0);
+            fighter = new Character.Fighter(this.textureManager.textures['fighter'], bulletFactory, Enum.InputType.GAMEPAD_0);
             this.addPlayer(fighter);
 
             // add the renderer view element to the DOM
@@ -236,7 +242,7 @@ module SpaceCombat {
             var i: number;
             var enemy: Character.Enemy;
             for (i = 1; i <= enemyCount; i++) {
-                enemy = new Character.Enemy(enemyTexture, this.textureManager.textures['enemyBullet'], i * spaceBetween, 50, (character: Character.INonPlayableCharacter) => this.addCharacter(character));
+                enemy = new Character.Enemy(enemyTexture, this.enemyBulletFactory, i * spaceBetween, 50);
                 this.addCharacter(enemy);
                 this.enemyTotal++;
             }

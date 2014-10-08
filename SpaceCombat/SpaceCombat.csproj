@@ -29,6 +29,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="js\app.ts" />
     <TypeScriptCompile Include="js\character\Bullet.ts" />
+    <TypeScriptCompile Include="js\character\BulletFactory.ts" />
     <TypeScriptCompile Include="js\character\Enemy.ts" />
     <TypeScriptCompile Include="js\character\Fighter.ts" />
     <TypeScriptCompile Include="js\character\ICharacter.ts" />

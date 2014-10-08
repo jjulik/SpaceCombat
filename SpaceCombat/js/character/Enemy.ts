@@ -8,10 +8,9 @@ module SpaceCombat.Character {
         // The number of frames before your the Enemy's weapon is ready to fire again
         coolDown: number;
         subType: Enum.CharacterSubType;
-        bulletTexture: PIXI.Texture;
-        addCharacter: (character: Character.INonPlayableCharacter) => void;
+        bulletFactory: BulletFactory;
 
-        constructor(texture: PIXI.Texture, bulletTexture: PIXI.Texture, x: number, y: number, addCharacterCallback: (character: Character.INonPlayableCharacter) => void) {
+        constructor(texture: PIXI.Texture, bulletFactory: BulletFactory, x: number, y: number) {
             this.canvasWidth = document.body.clientWidth;
             this.canvasHeight = document.body.clientHeight;
 
@@ -25,9 +24,7 @@ module SpaceCombat.Character {
 
             this.subType = Enum.CharacterSubType.ENEMY_NPC;
 
-            this.bulletTexture = bulletTexture;
-
-            this.addCharacter = addCharacterCallback;
+            this.bulletFactory = bulletFactory;
         }
 
         move(): boolean {
@@ -45,10 +42,7 @@ module SpaceCombat.Character {
         }
 
         fireBullet() {
-            var bullet: Bullet;
-            bullet = new Bullet(this.bulletTexture, this.sprite.position.x, this.sprite.position.y, 0, 10);
-            bullet.subType = Enum.CharacterSubType.ENEMY_BULLET;
-            this.addCharacter(bullet);
+            this.bulletFactory.fire(this.sprite.position.x, this.sprite.position.y, 0, 10);
         }
 
         die(): boolean {
