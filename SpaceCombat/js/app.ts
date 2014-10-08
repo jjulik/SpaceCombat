@@ -6,6 +6,7 @@
 ///<reference path="character/Fighter.ts"/>
 ///<reference path="character/INonPlayableCharacter.ts"/>
 ///<reference path="character/IPlayableCharacter.ts"/>
+///<reference path="util/MouseInput.ts"/>
 module SpaceCombat {
     class SpaceCombatEngine {
         renderer: PIXI.IPixiRenderer;
@@ -20,6 +21,7 @@ module SpaceCombat {
         newWaveIncoming: boolean;
         textureManager: TextureManager;
         enemyBulletFactory: Character.BulletFactory;
+        mouse: Util.MouseInput;
 
         constructor() {
             var fighter: Character.Fighter;
@@ -58,34 +60,59 @@ module SpaceCombat {
 
             this.players = []
             this.NPCs = []
-            fighter = new Character.Fighter(this.textureManager.textures['fighter'], bulletFactory, Enum.InputType.GAMEPAD_0);
+            fighter = new Character.Fighter(this.textureManager.textures['fighter'], bulletFactory, Enum.InputType.MOUSE);
             this.addPlayer(fighter);
 
             // add the renderer view element to the DOM
             document.body.appendChild(this.renderer.view);
 
             this.pressedKeys = [];
-            this.registerKeyHandlers();
+            this.mouse = new Util.MouseInput();
+            this.registerHandlers();
 
             this.enemyTotal = 0;
             this.level = 0;
             this.newWaveIncoming = false;
         }
 
-        registerKeyHandlers() {
+        registerHandlers() {
             document.addEventListener('keydown', (event) => {
                 this.pressedKeys[event.keyCode] = true;
             });
             document.addEventListener('keyup', (event) => {
                 this.pressedKeys[event.keyCode] = false;
             });
+            document.addEventListener('mousemove', (event) => this.mouseMoveWatcher(event));
+            document.addEventListener('mousedown', (event) => this.mouseDownWatcher(event));
+            document.addEventListener('mouseup', (event) => this.mouseUpWatcher(event));
+        }
+
+        mouseMoveWatcher(e: MouseEvent) {
+            this.mouse.x = e.clientX;
+            this.mouse.y = e.clientY;
+        }
+
+        mouseUpWatcher(e: MouseEvent) {
+            if (e.which === 1) {
+                this.mouse.lbPressed = false;
+            } else if (e.which === 3) {
+                this.mouse.rbPressed = false;
+            }
+        }
+
+        mouseDownWatcher(e: MouseEvent) {
+            if (e.which === 1) {
+                this.mouse.lbPressed = true;
+            } else if (e.which === 3) {
+                this.mouse.rbPressed = true;
+            }
         }
 
         movePlayers() {
             var i: number = 0, characterCount: number = this.players.length;
             var gamepads: Array<Gamepad> = this.getGamepads();
             for (; i < characterCount; i++) {
-                if (this.players[i].move(this.pressedKeys, gamepads)) {
+                if (this.players[i].move(this.pressedKeys, gamepads, this.mouse)) {
                     this.players[i] = null;
                     // player has died!
                     this.players.splice(i, 1);

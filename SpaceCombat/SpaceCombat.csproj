@@ -39,6 +39,7 @@
     <TypeScriptCompile Include="js\lib\Gamepad.d.ts" />
     <TypeScriptCompile Include="js\lib\PIXI.d.ts" />
     <TypeScriptCompile Include="js\TextureManager.ts" />
+    <TypeScriptCompile Include="js\util\MouseInput.ts" />
   </ItemGroup>
   <ItemGroup>
     <None Include="web.Debug.config">

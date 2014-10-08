@@ -1,5 +1,6 @@
 ﻿///<reference path="../lib/Gamepad.d.ts"/>
 ///<reference path="../lib/PIXI.d.ts"/>
+///<reference path="../util/MouseInput.ts"/>
 ///<reference path="../Enum.ts"/>
 module SpaceCombat.Character {
     import KeyCode = Enum.KeyCode;
@@ -96,8 +97,22 @@ module SpaceCombat.Character {
             return false;
         }
 
-        handleMouseInput(): boolean {
-            // TODO: this
+        handleMouseInput(mouseInput: Util.MouseInput): boolean {
+            if (mouseInput.x < this.sprite.position.x) {
+                this.sprite.position.x -= this.xSpeedModifier;
+            }
+            if (mouseInput.x > this.sprite.position.x) {
+                this.sprite.position.x += this.xSpeedModifier;
+            }
+            if (mouseInput.y < this.sprite.position.y) {
+                this.sprite.position.y -= this.ySpeedModifier;
+            }
+            if (mouseInput.y > this.sprite.position.y) {
+                this.sprite.position.y += this.ySpeedModifier;
+            }
+            if (mouseInput.lbPressed) {
+                this.fireBullet();
+            }
             return false;
         }
 
@@ -106,7 +121,7 @@ module SpaceCombat.Character {
             return false;
         }
 
-        move(pressedKeys: Array<boolean>, gamepads: Array<Gamepad>): boolean {
+        move(pressedKeys: Array<boolean>, gamepads: Array<Gamepad>, mouseInput: Util.MouseInput): boolean {
             switch (this.inputType) {
                 case Enum.InputType.GAMEPAD_0:
                 case Enum.InputType.GAMEPAD_1:
@@ -119,7 +134,7 @@ module SpaceCombat.Character {
                 case Enum.InputType.KEYBOARD:
                     return this.handleKeyboardInput(pressedKeys);
                 case Enum.InputType.MOUSE:
-                    return this.handleMouseInput();
+                    return this.handleMouseInput(mouseInput);
                 case Enum.InputType.TOUCH:
                     return this.handleTouchInput();
             }
