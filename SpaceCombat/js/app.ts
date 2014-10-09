@@ -216,14 +216,10 @@ module SpaceCombat {
             }
         }
 
-        filterDuplicates<T>(array: Array<T>): Array<T> {
-            var prims = { "boolean": {}, "number": {}, "string": {} }, objs: Array<T> = [];
+        filterDuplicates(array: Array<Collision.DamageEvent>): Array<Collision.DamageEvent> {
+            var prims = { "boolean": {}, "number": {}, "string": {} }, objs: Array<number> = [];
             return array.filter(function (item) {
-                var type = typeof item;
-                if (type in prims)
-                    return prims[type].hasOwnProperty(item) ? false : (prims[type][item] = true);
-                else
-                    return objs.indexOf(item) >= 0 ? false : objs.push(item) > 0;
+                 return objs.indexOf(item.index) >= 0 ? false : objs.push(item.index) > 0;
             });
         }
 
