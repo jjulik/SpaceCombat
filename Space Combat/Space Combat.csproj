@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <ProjectGuid>{21FB1A13-6854-4C6B-91C4-C2F9787B238D}</ProjectGuid>
+    <ProjectGuid>{4BC2162F-183A-456A-9214-C3DCBBCBD70E}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <OutputPath>bin</OutputPath>
@@ -27,20 +27,21 @@
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="js\app.ts" />
-    <TypeScriptCompile Include="js\character\Bullet.ts" />
-    <TypeScriptCompile Include="js\character\BulletFactory.ts" />
-    <TypeScriptCompile Include="js\character\Enemy.ts" />
-    <TypeScriptCompile Include="js\character\Fighter.ts" />
-    <TypeScriptCompile Include="js\character\ICharacter.ts" />
-    <TypeScriptCompile Include="js\character\INonPlayableCharacter.ts" />
-    <TypeScriptCompile Include="js\character\IPlayableCharacter.ts" />
-    <TypeScriptCompile Include="js\collision\DamageEvent.ts" />
-    <TypeScriptCompile Include="js\Enum.ts" />
-    <TypeScriptCompile Include="js\lib\Gamepad.d.ts" />
-    <TypeScriptCompile Include="js\lib\PIXI.d.ts" />
-    <TypeScriptCompile Include="js\TextureManager.ts" />
-    <TypeScriptCompile Include="js\util\MouseInput.ts" />
+    <TypeScriptCompile Include="ts\Application.ts" />
+    <TypeScriptCompile Include="ts\character\Bullet.ts" />
+    <TypeScriptCompile Include="ts\character\BulletFactory.ts" />
+    <TypeScriptCompile Include="ts\character\Enemy.ts" />
+    <TypeScriptCompile Include="ts\character\Fighter.ts" />
+    <TypeScriptCompile Include="ts\character\ICharacter.ts" />
+    <TypeScriptCompile Include="ts\character\INonPlayableCharacter.ts" />
+    <TypeScriptCompile Include="ts\character\IPlayableCharacter.ts" />
+    <TypeScriptCompile Include="ts\collision\DamageEvent.ts" />
+    <TypeScriptCompile Include="ts\Enum.ts" />
+    <TypeScriptCompile Include="ts\GameEngine.ts" />
+    <TypeScriptCompile Include="ts\lib\Gamepad.d.ts" />
+    <TypeScriptCompile Include="ts\lib\PIXI.d.ts" />
+    <TypeScriptCompile Include="ts\TextureManager.ts" />
+    <TypeScriptCompile Include="ts\util\MouseInput.ts" />
   </ItemGroup>
   <ItemGroup>
     <None Include="web.Debug.config">
@@ -56,7 +57,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <PropertyGroup>
-    <RootNamespace>SpaceCombat</RootNamespace>
+    <RootNamespace>Space_Combat</RootNamespace>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
@@ -66,7 +67,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>2192</DevelopmentServerPort>
+          <DevelopmentServerPort>6521</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:8888/SpaceCombat</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
@@ -80,10 +81,10 @@
   </ProjectExtensions>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES5</TypeScriptTarget>
-    <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
+    <TypeScriptRemoveComments>True</TypeScriptRemoveComments>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
     <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
-    <TypeScriptOutFile>js/SpaceCombat.js</TypeScriptOutFile>
+    <TypeScriptOutFile>SpaceCombat.js</TypeScriptOutFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptTarget>ES5</TypeScriptTarget>

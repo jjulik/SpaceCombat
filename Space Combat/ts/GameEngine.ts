@@ -11,7 +11,7 @@
 ///<reference path="Enum.ts"/>
 ///<reference path="TextureManager.ts"/>
 module SpaceCombat {
-    class SpaceCombatEngine {
+    export class GameEngine {
         renderer: PIXI.IPixiRenderer;
         stage: PIXI.Stage;
         NPCs: Array<Character.INonPlayableCharacter>;
@@ -199,7 +199,7 @@ module SpaceCombat {
             }
             if (deadPlayers.length > 0) {
                 deadPlayers = this.filterDuplicates(deadPlayers);
-                deadPlayers.sort(function  sortDeadPlayers(a: Collision.DamageEvent, b: Collision.DamageEvent) {
+                deadPlayers.sort(function sortDeadPlayers(a: Collision.DamageEvent, b: Collision.DamageEvent) {
                     if (a.index > b.index) {
                         return 1;
                     } else if (a.index === b.index) {
@@ -245,7 +245,7 @@ module SpaceCombat {
             }
         }
 
-        animate() {       
+        animate() {
             requestAnimationFrame(() => this.animate());
 
             this.detectCollisions();
@@ -294,10 +294,4 @@ module SpaceCombat {
             this.newWaveIncoming = false;
         }
     }
-
-    window.onload = () => {
-        var sce: SpaceCombatEngine;
-        sce = new SpaceCombatEngine();
-        sce.animate();
-    };
 }
