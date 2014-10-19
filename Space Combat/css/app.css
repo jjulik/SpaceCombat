@@ -9,3 +9,80 @@
 html {
     background: url('../img/starfield.png') repeat #000;
 }
+
+#display {
+    width: 100%;
+    height: calc(100% - 12rem);
+}
+
+.hud {
+    height: 12rem;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: white;
+}
+
+.d-pad {
+    height: 12rem;
+    width: 12rem;
+    background: grey;
+    display: inline-block;
+}
+
+ol.buttons {
+    position: absolute;
+    right: 0;
+    display: -webkit-inline-flex;
+    display: inline-flex;
+    -webkit-flex-flow: row-reverse;
+    flex-flow: row-reverse;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    vertical-align: top;
+}
+
+li.button {
+    width: 10rem;
+    height: 10rem;
+    padding: 1rem;
+}
+
+li.button:nth-child(1) {
+    background: red;
+    -webkit-order: 1;
+    order: 1;
+}
+
+li.button:nth-child(2) {
+    background: blue;
+    -webkit-order: 2;
+    order: 2;
+}
+
+li.button:nth-child(3) {
+    background: yellow;
+    -webkit-order: 3;
+    order: 3;
+}
+
+@media (orientation: landscape) {
+    #display {
+        width: calc(100% - 12rem);
+        margin-left: 12rem;
+        height: 100%;
+    }
+
+    .hud {
+        height: 100%;
+        width: 12rem;
+        left: 0;
+    }
+
+    ol.buttons {
+        display: -webkit-inline-flex;
+        display: flex;
+        flex-direction: column-reverse;
+    }
+}

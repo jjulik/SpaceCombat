@@ -35,9 +35,10 @@ module SpaceCombat {
             var bulletShape: PIXI.Graphics;
             var enemyBulletShape: PIXI.Graphics;
             var bulletFactory: Character.BulletFactory;
+            var canvas = <HTMLCanvasElement>document.getElementById('display');
             this.canvasWidth = document.body.clientWidth;
             this.canvasHeight = document.body.clientHeight;
-            this.renderer = PIXI.autoDetectRecommendedRenderer(this.canvasWidth, this.canvasHeight, null, true);
+            this.renderer = PIXI.autoDetectRecommendedRenderer(this.canvasWidth, this.canvasHeight, canvas, true);
             this.stage = new PIXI.Stage(0x000000);
             this.textureManager = new TextureManager();
 

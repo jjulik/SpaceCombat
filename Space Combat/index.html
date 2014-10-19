@@ -3,12 +3,23 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>TypeScript HTML App</title>
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Space Combat</title>
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="css/app.css" type="text/css" />
     <script src="js/lib/pixi.dev.js"></script>
     <!--<script src="js/lib/knockout-3.2.0.debug.js"></script>-->
     <script src="SpaceCombat.js"></script>
 </head>
 <body>
+    <div class="hud">
+        <canvas class="d-pad"></canvas><!--
+        --><ol class="buttons">
+            <li class="button"></li>
+            <li class="button"></li>
+            <li class="button"></li>
+        </ol>
+    </div>
+    <canvas id="display"></canvas>
 </body>
 </html>
